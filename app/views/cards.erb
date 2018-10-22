@@ -1,0 +1,25 @@
+<% @database.each_with_index do |post, index| %>
+  <div class="col-xs-12 col-sm-4 col-md-4 pt-5">
+    <div class="card-deck">
+      <div class="card">
+        <img class="card-img-top" src="<%= post[:photo].nil? ? "https://unsplash.it/600?image=3" : post[:photo] %>" alt="Post photo">
+        <div class="card-body">
+          <h5 class="card-title">
+            <b><%= "Card ##{index+1}" %></b>
+          </h5>
+          <p class="card-text"><%= post[:content][0..200] %>...</p>
+          <%= post[:rating].nil? ? 'No rating' : "#{post[:rating]} <i class='fas fa-star'></i>"  %>
+
+          <%= erb :modal, locals: {post: post} %>
+
+        </div>
+        <div class="card-footer">
+          <small class="text-muted">
+            <%= "Last updated #{index + 12} mins ago" %>
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+

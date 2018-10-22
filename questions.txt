@@ -1,18 +1,41 @@
+
+------------
+
 BACKEND - Programming
 These can be done in any language you're comfortable with
 
 1. Give a regular expression that detects hexadecimal numbers in a text.
 For example, ‘0x0f4’, ‘0acdadecf822eeff32aca5830e438cb54aa722e3’, ‘8BADF00D’ should be detected.
 
->
+> \b(?:0[xX])?[0-9a-fA-F]+\b
 
 2.Here is the pseudo code of a function that is defined recursively:
 -  f(0) = 1;
 -  f(1) = 3;
--  f(n)= 3 * f(n-1) f(n-2);
+-  f(n)= 3 * f(n-1) - f(n-2);
 Provide an implementation for ‘f’. Bonus points for a non recursive implementation.
 
 >
+
+def f_recursive(n)
+  return  1  if n == 0
+  return  3  if n == 1
+  return 3 * f_recursive(n - 1) - f_recursive(n - 2)
+end
+
+L'implementation non recursive :
+
+def f_non_recursive(n)
+  return 1 if n == 0
+  return 3 if n == 1
+  i, j = 3, 1
+  (2..n).each do
+    new  = 3 * i - j
+    i, j = new, i
+  end
+  i
+end
+
 
 BACKEND - MySQL
 
@@ -26,17 +49,39 @@ BACKEND - MySQL
 
 >
 
+class CreateUsers < ActiveRecord::Migration[5.2]
+  def change
+    create_table :users do |t|
+      t.string :firstname
+      t.string :lastname
+      t.integer :gender
+      t.string :email
+
+      t.timestamps
+    end
+  end
+end
+
+
 2. Write a query on the previous table that lists the 10 most recently added users.
 
->
+> User.order('created_at DESC').limit(10) / Va générer la requête SQL : SELECT * FROM Users ORDER BY created_at DESC LIMIT 10
+
+
+------------
 
 GENERAL - Creativity
 Si vous êtes Français, vous pouvez répondre en Français.
 
 1. Describe the color yellow to someone who is blind
 
->
+> Je vais tenter de vous la décrire en me basant sur des choses que vous connaissez bien comme le toucher, le ressenti ou les émotions par exemple.
+La couleur jaune, c'est quelque chose de lumineux. Je vais te donner un exemple : le soleil typiquement. Quand tu es dehors et que tu regardes le soleil, tu sens de la chaleur, de la lumière, de la luminosité. Le soleil typiquement est jaune. C'est une couleur chaude donc comme on dit (chaleur que ça procure sur la peau du fait des rayons lumineux). De la même manière, quand vous touchez du sable dans un environnement extérieur et que vous sentez le soleil qui tape, vous allez sentir la chaleur entre vos doigts. Ce sable est bien souvent jaune, peut-être du fait de la chaleur qu'il reçoit si nous "rêvons" un peu. Aussi, le jaune c'est une couleur vive et donc bien opposée au noir, au côté sombre que vous connaissez sachant que vous n'avez plus la vue. Il faut imaginer que cette couleur se perçoit comme l'inverse de ce que vous percevez.
 
 3. Describe the data model you’d use for a Battleship game. What are the key objects? How will your code use them?
 
->
+> Dans une partie de touché - coulé, on va avoir plusieurs modèles. Les principaux sont : player, ship & placement. Après, on pourrait aussi avoir game pour répertorier tous les jeux, savoir combien de fois tel joueur et tel joueur se sont rencontrés etc. avec donc le player qui stockerait la game_id.
+Pour décrire la table ships, plusieurs façons de faire: inheritance? avec donc column type direct dans rails et chaque 'type' de bateau aura une taille différente et si on veut jouer un peu, on pourrait imaginer qu'en fonction du type du bateau le tir est plus ou moins puissant; par ex: si on a un bombardier et qu'on touche un bateau à une case prêt, on pourrait dire qu'on l'a quand mpele touché (donc méthode à part à vérifier quand le joueur joue son coup). L'inheritance pourrait donc être intéressante par ex dans cette situation mais bon on s'éloigne quand même un peu trop des règles classiques de bataille navale :) Si on se cantonne au jeu, j'imaginerais simplement chaque type de bateau en booleen (comme bomber?) dans la table ships avec seulement la taille (length différente). Après, chaque ship aurait un 'placement' bien défini sur le plateau (table placements), le modèle placement stockerait donc la clé étrangère de ship et avec comme colonnes horizontale / verticale, des integers, on pourrait updater à chaque tour de jeu le placement à l'horizontale et verticale du bateau.
+
+
+
